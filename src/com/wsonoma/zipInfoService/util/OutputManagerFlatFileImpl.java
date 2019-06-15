@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
@@ -16,18 +18,22 @@ import com.wsonoma.zipInfoService.data.RangeData;
 
 public class OutputManagerFlatFileImpl implements OutputManager{
 
+	// This Implementation will write into a json file.
+	// To change the extension of the output file change the property of IOTypes.FLAT_FILE_EXTENTION
+	
+	static Logger logger = LogService.getInstance();
 	private String outtDir = IOTypes.FLAT_FILE_TARGET;
 	
 	@Override
-	public void generateOutput(String fileName, ArrayList<RangeData> zipRange) throws IOException {
+	public void generateOutput(String fileName, ArrayList<RangeData> zipRange) {
 		
-		// create json object from zipRange
+		// Create json object from zipRange
 		Gson gson = new Gson();
 		Map<String, ArrayList<ArrayList>> json = new HashMap<>();
 		ArrayList<ArrayList> zips = new ArrayList<>();
 		
 		for (int i = 0; i < zipRange.size(); i++) {
-			ArrayList singleRange = new ArrayList();
+			ArrayList<Integer> singleRange = new ArrayList<>();
 			singleRange.add(zipRange.get(i).getMinRange());
 			singleRange.add(zipRange.get(i).getMaxRange());
 			zips.add(singleRange);
@@ -40,9 +46,15 @@ public class OutputManagerFlatFileImpl implements OutputManager{
 		}
 
 		// write to file
-		Writer writer = new FileWriter(outtDir + "\\" + fileName);
-		gson.toJson(json, writer);
-		writer.flush(); //flush data to file
-		writer.close();
+		Writer writer = null;
+		try {
+			logger.info("Write into file " + fileName);
+			writer = new FileWriter(outtDir + "\\" + fileName);
+			gson.toJson(json, writer);
+			writer.flush(); //flush data to file
+			writer.close();
+		} catch (IOException e) {
+			logger.info(e);
+		}
 	}
 }

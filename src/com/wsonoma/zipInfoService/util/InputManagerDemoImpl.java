@@ -6,13 +6,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import com.wsonoma.zipInfoService.data.RangeData;
 
 public class InputManagerDemoImpl implements InputManager{
 
-	// this method will generate fake data
+	// This method will generate fake data
+	
+	static Logger logger = LogService.getInstance();
+
 	@Override
-	public Map<String, ArrayList<RangeData>> getInput() throws FileNotFoundException {
+	public Map<String, ArrayList<RangeData>> getInput() {
 		// create some fake data!
 		ArrayList<String> minList = new ArrayList<>(Arrays.asList("99632", "94785", "36541", "89549a"));
 		ArrayList<String> maxList = new ArrayList<>(Arrays.asList("99635", "99785", "36551", "89541"));
@@ -20,14 +25,14 @@ public class InputManagerDemoImpl implements InputManager{
 		return renderData(minList, maxList);
 	}
 	
-	// this method will accept premade datasets in array forms
+	// This method will accept premade datasets in array forms
 	public Map<String, ArrayList<RangeData>> getInput(ArrayList<String> minList, ArrayList<String> maxList) throws FileNotFoundException {
 
 		return renderData(minList, maxList);
 	}
 	
-	// this method will rander demo datasets into proper input
-	private Map<String, ArrayList<RangeData>> renderData(ArrayList<String> minList, ArrayList<String> maxList) throws FileNotFoundException {
+	// This method will rander demo datasets into proper input
+	private Map<String, ArrayList<RangeData>> renderData(ArrayList<String> minList, ArrayList<String> maxList) {
 		
 		Map<String, ArrayList<RangeData>> inputDataMap = new HashMap<String, ArrayList<RangeData>>();
 		ArrayList<RangeData> inputData = new ArrayList<RangeData>();
@@ -43,7 +48,7 @@ public class InputManagerDemoImpl implements InputManager{
 			}
 		}
 		inputDataMap.put("zipRange-demo", inputData);
-
+		logger.info("Generated data named: zipRange-demo with " + inputData.size() + " range points");
 		return inputDataMap;
 	}
 	
