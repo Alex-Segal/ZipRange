@@ -10,7 +10,7 @@ public class LogService {
 	
 	private static Logger logger;
 
-	public void Logger() {
+	private LogService() {
 	}
 	
 	// This will retrive a logger object using a Singleton pattern

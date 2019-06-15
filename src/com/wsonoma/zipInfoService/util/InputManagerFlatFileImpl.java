@@ -16,7 +16,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.wsonoma.zipInfoService.data.IOTypes;
 import com.wsonoma.zipInfoService.data.RangeData; 
 
 public class InputManagerFlatFileImpl implements InputManager{
@@ -25,7 +24,7 @@ public class InputManagerFlatFileImpl implements InputManager{
 
 	// This InputManager will get data from a flat file. The current design works with json files and with file convention dictates the file to contain the string "zipRange"
 
-	private String inputDir = IOTypes.FLAT_FILE_LZ;
+	private String inputDir = IOConfigurations.FLAT_FILE_LZ;
 	
 	@Override
 	public Map<String,ArrayList<RangeData>> getInput() {
@@ -39,7 +38,7 @@ public class InputManagerFlatFileImpl implements InputManager{
 		
 		ArrayList<String> files = new ArrayList<>();
 	    for (String fileEntry : folder.list()) {
-	    	if (fileEntry.contains("zipRange"))
+	    	if (fileEntry.contains(IOConfigurations.FLAT_FILE_NAME))
 	    		files.add(fileEntry);
 	    }
 	    return files;
@@ -58,7 +57,7 @@ public class InputManagerFlatFileImpl implements InputManager{
 				Reader reader = new FileReader(inputDir + "\\" + file);
 	            // Get json element contain zip ranges
 				JsonElement json = gson.fromJson(reader, JsonElement.class);
-				JsonArray zips = json.getAsJsonObject().get("zipRanges").getAsJsonArray();
+				JsonArray zips = json.getAsJsonObject().get(IOConfigurations.FLAT_FILE_TAG).getAsJsonArray();
 				logger.info("File has " + zips.size() + " zip ranges");
 				
 				// Populate zipRanges object with the given input (including zip validation).

@@ -10,6 +10,7 @@ import com.wsonoma.zipInfoService.data.RangeData;
 import com.wsonoma.zipInfoService.logic.RestrictShippmentZipRange;
 import com.wsonoma.zipInfoService.logic.RestrictShippmentZipRangeImpl;
 import com.wsonoma.zipInfoService.util.IOConfigFactory;
+import com.wsonoma.zipInfoService.util.IOConfigurations;
 import com.wsonoma.zipInfoService.util.InputManager;
 import com.wsonoma.zipInfoService.util.LogService;
 import com.wsonoma.zipInfoService.util.OutputManager;
@@ -19,6 +20,9 @@ public class ZipInfoServiceExecutable {
 	static Logger logger = LogService.getInstance();
 
 	public static void main(String[] args) throws IOException {
+		
+		// read load file
+		IOConfigurations.loadConfigurations();
 
 		// get configurations
 		logger.info("Load configurations");
